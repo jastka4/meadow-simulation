@@ -3,16 +3,19 @@
 
 #include "Animal.h"
 #include "../Grass.h"
+#include "../Pond.h"
 
 class Cow : public Animal{
     Grass &grass;
+    Pond &pond;
 
     void live() override;
     void eat();
-public:
-    Cow(int id, Grass &grass, Meadow &meadowThread);
-
+    void drink();
     void think();
+
+public:
+    Cow(int id, Grass &grass, Meadow &meadow, Pond &pond);
 };
 
 

@@ -19,6 +19,8 @@ public:
     virtual ~Animal();
 
     virtual void live() = 0;
+
+    int getId() const;
 };
 
 

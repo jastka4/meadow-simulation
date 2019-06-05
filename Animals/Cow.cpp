@@ -1,14 +1,14 @@
 #include <array>
 #include "Cow.h"
 
-Cow::Cow(int id, Grass &grass, Meadow &meadow) : Animal(id, meadow), grass(grass) {}
+Cow::Cow(int id, Grass &grass, Meadow &meadow, Pond &pond) : Animal(id, meadow), grass(grass), pond(pond) {}
 
 void Cow::live() {
     meadow.synchronization.wait();
 
     do {
         eat();
-//        drink();
+        drink();
         think();
     } while (meadow.ready);
 }
@@ -27,6 +27,22 @@ void Cow::eat() {
     }
 
     grass.done_eating();
+}
+
+void Cow::drink() {
+    pond.request(id);
+
+    std::lock_guard<std::mutex> lock(pond.mutex);
+    std::this_thread::sleep_for(std::chrono::milliseconds(250));
+
+    thread_local std::uniform_int_distribution<> wait(2, 4);
+
+    std::cout << id << " is eating grass" << std::endl;
+    for (int time = wait(random_generator); time > 0 ; --time) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(250));
+    }
+
+    pond.done_drinking(id);
 }
 
 void Cow::think() {

@@ -1,7 +1,7 @@
 #include "Grass.h"
 
-Grass::Grass(const int grass_id, const int owner_id, Sun &sun, Meadow &meadow) :
-        id(grass_id), owner(owner_id), sun_thread(sun), meadow(meadow), ready(true), growth_counter(0), grow_thread(&Grass::grow, this) {}
+Grass::Grass(const int grass_id, Sun &sun, Meadow &meadow) :
+        id(grass_id), sun_thread(sun), meadow(meadow), ready(true), growth_counter(0), grow_thread(&Grass::grow, this) {}
 
 Grass::~Grass() {
     grow_thread.join();

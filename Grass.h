@@ -7,7 +7,6 @@
 
 class Grass {
     const int id;
-    int owner;
     int growth_counter;
     Sun &sun_thread;
     Meadow &meadow;
@@ -18,13 +17,12 @@ public:
     std::mutex mutex;
     Synchronization synchronization;
 
-    Grass(int grass_id, int owner_id, Sun &sun, Meadow &meadow);
+    Grass(int grass_id, Sun &sun, Meadow &meadow);
     virtual ~Grass();
 
     void request(int owner_id);
     void done_eating();
     void grow();
-
 };
 
 

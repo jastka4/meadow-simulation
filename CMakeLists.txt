@@ -17,5 +17,7 @@ add_executable(meadow_sim
         Grass.h
         Meadow.cpp
         Meadow.h
+        Pond.cpp
+        Pond.h
         Sun.cpp
         Sun.h)

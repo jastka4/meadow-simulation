@@ -4,21 +4,25 @@
 #include "Animals/Animal.h"
 #include "Grass.h"
 #include "Animals/Cow.h"
+#include "Pond.h"
 
 int main() {
     Meadow meadow;
     Sun *sun = new Sun(meadow);
+    Pond *pond = new Pond(10);
 
     std::array<Grass, 3> grass {{
-        {1, 1, *sun, meadow},
-        {2, 2, *sun, meadow},
-        {3, 3, *sun, meadow}
+        {1, *sun, meadow},
+        {2, *sun, meadow},
+        {3, *sun, meadow}
     }};
 
-    std::array<Cow, 3> animals {{
-       {1, grass[0], meadow},
-       {2, grass[1], meadow},
-       {3, grass[2], meadow}
+    std::array<Cow, 5> animals {{
+       {1, grass[0], meadow, *pond},
+       {2, grass[1], meadow, *pond},
+       {3, grass[1], meadow, *pond},
+       {4, grass[2], meadow, *pond},
+       {5, grass[2], meadow, *pond}
     }};
 
     std::this_thread::sleep_for(std::chrono::seconds(1));

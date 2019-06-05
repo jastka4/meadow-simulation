@@ -7,3 +7,7 @@ Animal::~Animal() {
     live_thread.join();
 }
 
+int Animal::getId() const {
+    return id;
+}
+
