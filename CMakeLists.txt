@@ -13,15 +13,17 @@ add_executable(meadow_sim
         Animals/Rabbit.h
         Animals/Wolf.cpp
         Animals/Wolf.h
-        Grass.cpp
-        Grass.h
+        Resources/Grass.cpp
+        Resources/Grass.h
         Resources/Rabbit_Hole.cpp
         Resources/Rabbit_Hole.h
         Meadow.cpp
         Meadow.h
-        Pond.cpp
-        Pond.h
+        Resources/Pond.cpp
+        Resources/Pond.h
         Sun.cpp
-        Sun.h Synchronization.cpp Synchronization.h)
+        Sun.h
+        Synchronization.cpp
+        Synchronization.h
         Utils.cpp
         Utils.h)

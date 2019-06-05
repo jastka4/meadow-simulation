@@ -4,7 +4,7 @@
 
 #include <algorithm>
 #include <vector>
-#include "Synchronization.h"
+#include "../Synchronization.h"
 
 class Pond {
     std::vector<int> animals;

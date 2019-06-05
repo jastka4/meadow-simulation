@@ -4,7 +4,7 @@
 #include <atomic>
 #include <thread>
 #include "Synchronization.h"
-#include "Pond.h"
+#include "Resources/Pond.h"
 
 struct Meadow {
     std::atomic<bool> ready{false};

@@ -2,8 +2,8 @@
 #define MEADOW_SIM_COW_H
 
 #include "Animal.h"
-#include "../Grass.h"
-#include "../Pond.h"
+#include "../Resources/Grass.h"
+#include "../Resources/Pond.h"
 
 class Cow : public Animal{
     Grass &grass;

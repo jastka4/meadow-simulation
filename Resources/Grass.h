@@ -2,8 +2,8 @@
 #define MEADOW_SIM_GRASS_H
 
 #include <iostream>
-#include "Meadow.h"
-#include "Sun.h"
+#include "../Meadow.h"
+#include "../Sun.h"
 
 class Grass {
     const int id;
