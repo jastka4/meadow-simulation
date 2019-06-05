@@ -8,6 +8,7 @@
 #include <array>
 #include <iostream>
 #include "../Meadow.h"
+#include "../Utils.h"
 
 class Animal {
 protected:

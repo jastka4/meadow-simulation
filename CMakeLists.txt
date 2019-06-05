@@ -23,3 +23,5 @@ add_executable(meadow_sim
         Pond.h
         Sun.cpp
         Sun.h Synchronization.cpp Synchronization.h)
+        Utils.cpp
+        Utils.h)

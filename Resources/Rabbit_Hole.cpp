@@ -6,7 +6,7 @@ void Rabbit_Hole::request(int id) {
     if (rabbits.size() < capacity) {
         std::lock_guard<std::mutex> lock(mutex);
         rabbits.push_back(id);
-        std::cout << id << " started hiding" << std::endl;
+        Utils::threadSafeCout(std::to_string(id) + " started hiding");
     } else {
         synchronization.wait();
     }

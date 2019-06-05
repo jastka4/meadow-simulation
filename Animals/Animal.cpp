@@ -14,8 +14,7 @@ void Animal::think() {
     thread_local std::uniform_int_distribution<> wait(2, 4);
     thread_local std::uniform_int_distribution<> dist(0, topics.size() - 1);
 
-    std::cout << id << " started thinking about " << topics[dist(random_generator)] << std::endl;
-
+    Utils::threadSafeCout(std::to_string(id) + " started thinking about " + topics[dist(random_generator)]);
     for (int time = wait(random_generator); time > 0 ; --time) {
         std::this_thread::sleep_for(std::chrono::milliseconds(150));
     }
@@ -29,7 +28,7 @@ void Animal::drink() {
 
     thread_local std::uniform_int_distribution<> wait(2, 4);
 
-    std::cout << id << " is eating grass" << std::endl;
+    Utils::threadSafeCout(std::to_string(id) + " is drinking water");
     for (int time = wait(random_generator); time > 0 ; --time) {
         std::this_thread::sleep_for(std::chrono::milliseconds(250));
     }

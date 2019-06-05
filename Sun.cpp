@@ -1,5 +1,6 @@
 #include <iostream>
 #include "Sun.h"
+#include "Utils.h"
 
 Sun::Sun(Meadow &meadow) : meadow(meadow), live_thread(&Sun::shine, this), is_day(true) {}
 
@@ -9,7 +10,7 @@ Sun::~Sun() {
 
 void Sun::day() {
 
-    std::cout << "===== DAY =====" << std::endl;
+    Utils::threadSafeCout("===== DAY =====");
     is_day = true;
 
     thread_local std::uniform_int_distribution<> wait(7, 13);
@@ -23,7 +24,7 @@ void Sun::night() {
     thread_local std::uniform_int_distribution<> wait(11, 17);
     is_day = false;
 
-    std::cout << "==== NIGHT ====" << std::endl;
+    Utils::threadSafeCout("==== NIGHT ====");
     for (int time = wait(random_generator); time > 0 ; --time) {
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
