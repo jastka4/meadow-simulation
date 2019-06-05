@@ -12,11 +12,12 @@ class Sun {
     void shine();
     Meadow &meadow;
     std::thread live_thread;
+    std::atomic<bool> is_day;
 public:
     explicit Sun(Meadow &meadow);
     virtual ~Sun();
 
-    std::atomic<bool> is_day{false};
+    const std::atomic<bool> &getIsDay() const;
 };
 
 

@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Sun.h"
 
-Sun::Sun(Meadow &meadow) : meadow(meadow), live_thread(&Sun::shine, this) {}
+Sun::Sun(Meadow &meadow) : meadow(meadow), live_thread(&Sun::shine, this), is_day(true) {}
 
 Sun::~Sun() {
     live_thread.join();
@@ -37,4 +37,8 @@ void Sun::shine() {
         night();
     } while (meadow.ready);
 
+}
+
+const std::atomic<bool> &Sun::getIsDay() const {
+    return is_day;
 }
