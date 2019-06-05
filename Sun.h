@@ -9,14 +9,14 @@ class Sun {
 
     void day();
     void night();
-    Meadow &meadow_thread;
+    void shine();
+    Meadow &meadow;
     std::thread live_thread;
 public:
-    Sun(Meadow &meadow);
-
+    explicit Sun(Meadow &meadow);
     virtual ~Sun();
 
-    void shine();
+    std::atomic<bool> is_day{false};
 };
 
 

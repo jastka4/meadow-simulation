@@ -3,17 +3,22 @@
 
 #include <string>
 #include <thread>
+#include <random>
 #include "../Meadow.h"
 
 class Animal {
-    std::string name;
+protected:
+    std::mt19937 random_generator{std::random_device{}()};
+
+    int id;
     std::thread live_thread;
-    Meadow &meadow_thread;
+    Meadow &meadow;
 
 public:
-    Animal(const std::string &name, Meadow &meadow);
+    Animal(int id, Meadow &meadow);
+    virtual ~Animal();
 
-    void live();
+    virtual void live() = 0;
 };
 
 

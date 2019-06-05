@@ -13,7 +13,9 @@ add_executable(meadow_sim
         Animals/Rabbit.h
         Animals/Wolf.cpp
         Animals/Wolf.h
-        Sun.cpp
-        Sun.h
+        Grass.cpp
+        Grass.h
         Meadow.cpp
-        Meadow.h)
+        Meadow.h
+        Sun.cpp
+        Sun.h)
