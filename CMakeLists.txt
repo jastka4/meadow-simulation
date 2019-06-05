@@ -15,6 +15,8 @@ add_executable(meadow_sim
         Animals/Wolf.h
         Grass.cpp
         Grass.h
+        Resources/Rabbit_Hole.cpp
+        Resources/Rabbit_Hole.h
         Meadow.cpp
         Meadow.h
         Pond.cpp
