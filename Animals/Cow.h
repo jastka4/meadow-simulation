@@ -7,15 +7,12 @@
 
 class Cow : public Animal{
     Grass &grass;
-    Pond &pond;
 
     void live() override;
-    void eat();
-    void drink();
-    void think();
+    void eat() override;
 
 public:
-    Cow(int id, Grass &grass, Meadow &meadow, Pond &pond);
+    Cow(int id, Grass &grass, Meadow &meadow);
 };
 
 

@@ -7,11 +7,10 @@ Grass::~Grass() {
     grow_thread.join();
 }
 
-void Grass::request(int const owner_id)  {
+void Grass::request()  {
     if (ready) {
         std::lock_guard<std::mutex> lock(mutex);
         ready = false;
-        std::cout << "Grass not ready" << std::endl;
     } else {
         synchronization.wait();
     }

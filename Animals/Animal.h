@@ -4,6 +4,9 @@
 #include <string>
 #include <thread>
 #include <random>
+#include <utility>
+#include <array>
+#include <iostream>
 #include "../Meadow.h"
 
 class Animal {
@@ -18,7 +21,10 @@ public:
     Animal(int id, Meadow &meadow);
     virtual ~Animal();
 
+    void think();
+    void drink();
     virtual void live() = 0;
+    virtual void eat() = 0;
 
     int getId() const;
 };

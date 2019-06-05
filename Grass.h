@@ -20,7 +20,7 @@ public:
     Grass(int grass_id, Sun &sun, Meadow &meadow);
     virtual ~Grass();
 
-    void request(int owner_id);
+    void request();
     void done_eating();
     void grow();
 };

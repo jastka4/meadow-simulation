@@ -20,4 +20,4 @@ add_executable(meadow_sim
         Pond.cpp
         Pond.h
         Sun.cpp
-        Sun.h)
+        Sun.h Synchronization.cpp Synchronization.h)

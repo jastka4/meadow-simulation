@@ -1,10 +1,40 @@
-#include <utility>
 #include "Animal.h"
 
 Animal::Animal(int id, Meadow &meadow) : id(id), meadow(meadow), live_thread(&Animal::live, this) {}
 
 Animal::~Animal() {
     live_thread.join();
+}
+
+void Animal::think() {
+    static constexpr std::array<const char *, 5> topics {{
+         "politics", "art", "the meaning of life", "the source of morality", "how many straws makes a bale"
+    }};
+
+    thread_local std::uniform_int_distribution<> wait(2, 4);
+    thread_local std::uniform_int_distribution<> dist(0, topics.size() - 1);
+
+    std::cout << id << " started thinking about " << topics[dist(random_generator)] << std::endl;
+
+    for (int time = wait(random_generator); time > 0 ; --time) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(150));
+    }
+}
+
+void Animal::drink() {
+    meadow.pond->request(id);
+
+    std::lock_guard<std::mutex> lock(meadow.pond->mutex);
+    std::this_thread::sleep_for(std::chrono::milliseconds(250));
+
+    thread_local std::uniform_int_distribution<> wait(2, 4);
+
+    std::cout << id << " is eating grass" << std::endl;
+    for (int time = wait(random_generator); time > 0 ; --time) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(250));
+    }
+
+    meadow.pond->done_drinking(id);
 }
 
 int Animal::getId() const {

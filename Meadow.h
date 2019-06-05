@@ -3,26 +3,15 @@
 
 #include <atomic>
 #include <thread>
-
-struct Synchronization {
-    std::mutex mutex;
-    std::condition_variable condition_variable;
-
-public:
-    void wait() {
-        std::unique_lock<std::mutex> lock(mutex);
-        condition_variable.wait(lock);
-    }
-
-    void notify_all() {
-        std::unique_lock<std::mutex> lock(mutex);
-        condition_variable.notify_all();
-    }
-};
+#include "Synchronization.h"
+#include "Pond.h"
 
 struct Meadow {
     std::atomic<bool> ready{false};
     Synchronization synchronization;
+
+    Pond *pond;
+    explicit Meadow(Pond *pond);
 };
 
 
