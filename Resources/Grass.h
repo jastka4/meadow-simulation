@@ -4,7 +4,7 @@
 #include <iostream>
 #include "../Meadow.h"
 #include "../Sun.h"
-#include "../Utils.h"
+#include "../Utils/Utils.h"
 
 class Grass {
     int id;

@@ -4,8 +4,8 @@
 
 #include <vector>
 #include <iostream>
-#include "../Synchronization.h"
-#include "../Utils.h"
+#include "../Utils/Synchronization.h"
+#include "../Utils/Utils.h"
 
 class Rabbit_Hole {
     std::vector<int> rabbits;

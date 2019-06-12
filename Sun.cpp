@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Sun.h"
-#include "Utils.h"
+#include "Utils/Utils.h"
 
 Sun::Sun(Meadow &meadow) : meadow(meadow), live_thread(&Sun::shine, this), is_day(true) {}
 

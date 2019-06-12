@@ -9,7 +9,7 @@
 #include <list>
 #include <iostream>
 #include "../Meadow.h"
-#include "../Utils.h"
+#include "../Utils/Utils.h"
 
 class Animal {
 protected:

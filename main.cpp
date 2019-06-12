@@ -1,12 +1,14 @@
 #include <iostream>
 #include <array>
 #include "Sun.h"
-#include "Animals/Animal.h"
 #include "Resources/Grass.h"
 #include "Animals/Cow.h"
 #include "Resources/Rabbit_Hole.h"
 #include "Animals/Rabbit.h"
 #include "Animals/Wolf.h"
+#include "Utils/Graphics.h"
+
+auto *graphics = new Graphics();
 
 int main() {
     Pond *pond = new Pond(10);
@@ -38,6 +40,9 @@ int main() {
         wolves.push_back(new Wolf(i, rabbits, meadow, *sun));
     }
 
+    graphics->init();
+    refresh();
+
     std::this_thread::sleep_for(std::chrono::seconds(1));
     meadow.ready = true;
     meadow.synchronization.notify_all();
@@ -48,5 +53,7 @@ int main() {
     Utils::threadSafeCout("===== FINISHING =====");
     Utils::threadSafeCout("Animals are going on holiday!");
 
+    getch();
+    endwin();
     return 0;
 }

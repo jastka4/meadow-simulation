@@ -3,7 +3,7 @@
 
 #include <atomic>
 #include <thread>
-#include "Synchronization.h"
+#include "Utils/Synchronization.h"
 #include "Resources/Pond.h"
 
 struct Meadow {
