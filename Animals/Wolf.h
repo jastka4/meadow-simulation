@@ -6,9 +6,10 @@
 
 class Wolf : public Animal {
     std::vector<Rabbit*> &rabbits;
+    Sun &sun;
 
 public:
-    Wolf(int id, std::vector<Rabbit*> &rabbits, Meadow &meadow);
+    Wolf(int id, std::vector<Rabbit*> &rabbits, Meadow &meadow, Sun &sun);
 
 private:
     void live() override;

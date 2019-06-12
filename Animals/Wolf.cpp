@@ -1,12 +1,14 @@
 #include "Wolf.h"
 
-Wolf::Wolf(int id, std::vector<Rabbit*> &rabbits, Meadow &meadow) : Animal(id, meadow), rabbits(rabbits) {}
+Wolf::Wolf(int id, std::vector<Rabbit*> &rabbits, Meadow &meadow, Sun &sun) : Animal(id, meadow), rabbits(rabbits), sun(sun) {}
 
 void Wolf::live() {
     meadow.synchronization.wait();
 
     do {
-        eat();
+        if (!sun.getIsDay()) {
+            eat();
+        }
         drink("Wolf");
         think("Wolf");
     } while (meadow.ready);

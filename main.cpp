@@ -35,7 +35,7 @@ int main() {
 
     std::vector<Wolf*> wolves;
     for (int i = 0; i < 3; ++i) {
-        wolves.push_back(new Wolf(i, rabbits, meadow));
+        wolves.push_back(new Wolf(i, rabbits, meadow, *sun));
     }
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
