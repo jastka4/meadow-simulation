@@ -13,31 +13,30 @@ int main() {
     Meadow meadow(pond);
     Sun *sun = new Sun(meadow);
 
-    std::array<Grass, 3> grass {{
-        {1, *sun, meadow},
-        {2, *sun, meadow},
-        {3, *sun, meadow}
-    }};
+    std::vector<Grass*> grass;
+    for (int i = 0; i < 3; i++) {
+        grass.push_back(new Grass(i, *sun, meadow));
+    }
 
-    std::array<Rabbit_Hole, 4> rabbit_holes{{{3}, {3}, {3}, {3}}};
+    std::vector<Rabbit_Hole*> rabbit_holes;
+    for (int i = 0; i < 3; i++) {
+        rabbit_holes.push_back(new Rabbit_Hole(3));
+    }
 
-//    std::array<Cow, 3> cows {{
-//       {1, grass[0], meadow},
-//       {2, grass[1], meadow},
-//       {3, grass[1], meadow}
-//    }};
+    std::vector<Cow*> cows;
+    for (int i = 0; i < 3; ++i) {
+        cows.push_back(new Cow(i, grass, meadow));
+    }
 
-    std::array<Rabbit, 3> rabbits {{
-        {1, grass[0], meadow, rabbit_holes[0]},
-        {2, grass[1], meadow, rabbit_holes[0]},
-        {3, grass[1], meadow, rabbit_holes[0]}
-    }};
+    std::vector<Rabbit*> rabbits;
+    for (int i = 0; i < 3; ++i) {
+        rabbits.push_back(new Rabbit(i, grass, meadow, rabbit_holes));
+    }
 
-    std::array<Wolf, 3> wolfs {{
-       {1, rabbits[0], meadow},
-       {2, rabbits[1], meadow},
-       {3, rabbits[1], meadow}
-    }};
+    std::vector<Wolf*> wolves;
+    for (int i = 0; i < 3; ++i) {
+        wolves.push_back(new Wolf(i, rabbits, meadow));
+    }
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
     meadow.ready = true;
@@ -46,8 +45,8 @@ int main() {
     std::this_thread::sleep_for(std::chrono::seconds(30));
     meadow.ready = false;
 
-    std::cout << "===== FINISHING =====" << std::endl;
-    std::cout << "Animals are going on holiday!" << std::endl;
+    Utils::threadSafeCout("===== FINISHING =====");
+    Utils::threadSafeCout("Animals are going on holiday!");
 
     return 0;
 }

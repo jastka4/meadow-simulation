@@ -1,7 +1,7 @@
 #include "Rabbit.h"
 
-Rabbit::Rabbit(int id, Grass &grass, Meadow &meadow, Rabbit_Hole &rabbit_hole)
-        : Animal(id, meadow), grass(grass), rabbit_hole(rabbit_hole) {}
+Rabbit::Rabbit(int id, std::vector<Grass*> &grass, Meadow &meadow, std::vector<Rabbit_Hole*> &rabbit_holes)
+        : Animal(id, meadow), grass(grass), rabbit_holes(rabbit_holes), alive(true) {}
 
 void Rabbit::live() {
     meadow.synchronization.wait();
@@ -14,9 +14,10 @@ void Rabbit::live() {
 }
 
 void Rabbit::eat() {
-    grass.request();
+    Grass* grass_to_eat = drawGrass();
+    grass_to_eat->request();
 
-    std::lock_guard<std::mutex> lock(grass.mutex);
+    std::lock_guard<std::mutex> lock(grass_to_eat->mutex);
     std::this_thread::sleep_for(std::chrono::milliseconds(250));
 
     thread_local std::uniform_int_distribution<> wait(2, 4);
@@ -26,13 +27,14 @@ void Rabbit::eat() {
         std::this_thread::sleep_for(std::chrono::milliseconds(250));
     }
 
-    grass.done_eating();
+    grass_to_eat->done_eating();
 }
 
 void Rabbit::hide() {
-    rabbit_hole.request(id);
+    Rabbit_Hole* rabbit_hole = drawRabbitHole();
+    rabbit_hole->request(id);
 
-    std::lock_guard<std::mutex> lock(rabbit_hole.mutex);
+    std::lock_guard<std::mutex> lock(rabbit_hole->mutex);
     std::this_thread::sleep_for(std::chrono::milliseconds(250));
 
     thread_local std::uniform_int_distribution<> wait(2, 4);
@@ -41,16 +43,25 @@ void Rabbit::hide() {
     for (int time = wait(random_generator); time > 0 ; --time) {
         std::this_thread::sleep_for(std::chrono::milliseconds(250));
     }
-    rabbit_hole.done_hiding(id);
+    rabbit_hole->done_hiding(id);
 }
 
 void Rabbit::request() {
     thread_local std::uniform_int_distribution<> chance(1, 10);
     if (chance(random_generator) > 5) {
         hide();
-//        synchronization.wait();
     } else {
         Utils::threadSafeCout("Rabbit " + std::to_string(id) + " was eaten");
-//        this->~Rabbit(); // die
+        alive = false;
     }
+}
+
+Grass* Rabbit::drawGrass() {
+    thread_local std::uniform_int_distribution<> index(0, grass.size() - 1);
+    return grass.at(index(random_generator));
+}
+
+Rabbit_Hole* Rabbit::drawRabbitHole() {
+    thread_local std::uniform_int_distribution<> index(0, rabbit_holes.size() - 1);
+    return rabbit_holes.at(index(random_generator));
 }

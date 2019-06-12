@@ -5,16 +5,16 @@
 #include "Rabbit.h"
 
 class Wolf : public Animal {
-    Rabbit &rabbit;
+    std::vector<Rabbit*> &rabbits;
 
 public:
-    Wolf(int id, Rabbit &rabbit, Meadow &meadow);
+    Wolf(int id, std::vector<Rabbit*> &rabbits, Meadow &meadow);
 
 private:
     void live() override;
     void eat() override;
 
-    void hunt();
+    Rabbit * drawRabbit();
 };
 
 

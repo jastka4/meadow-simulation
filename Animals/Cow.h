@@ -6,13 +6,15 @@
 #include "../Resources/Pond.h"
 
 class Cow : public Animal{
-    Grass &grass;
+    std::vector<Grass*> &grass;
 
     void live() override;
     void eat() override;
 
 public:
-    Cow(int id, Grass &grass, Meadow &meadow);
+    Cow(int id, std::vector<Grass*> &grass, Meadow &meadow);
+
+    Grass *drawGrass();
 };
 
 

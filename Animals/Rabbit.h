@@ -6,8 +6,9 @@
 #include "../Resources/Rabbit_Hole.h"
 
 class Rabbit : public Animal {
-    Grass &grass;
-    Rabbit_Hole &rabbit_hole;
+    std::vector<Grass*> &grass;
+    std::vector<Rabbit_Hole*> &rabbit_holes;
+    bool alive;
 
     void live() override;
     void eat() override ;
@@ -16,9 +17,11 @@ class Rabbit : public Animal {
 public:
     std::mutex mutex;
 
-    Rabbit(int id, Grass &grass, Meadow &meadow, Rabbit_Hole &rabbit_hole);
-
+    Rabbit(int id, std::vector<Grass*> &grass, Meadow &meadow, std::vector<Rabbit_Hole*> &rabbit_holes);
     void request();
+    Grass *drawGrass();
+
+    Rabbit_Hole *drawRabbitHole();
 };
 
 

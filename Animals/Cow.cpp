@@ -1,6 +1,6 @@
 #include "Cow.h"
 
-Cow::Cow(int id, Grass &grass, Meadow &meadow) : Animal(id, meadow), grass(grass) {}
+Cow::Cow(int id, std::vector<Grass*> &grass, Meadow &meadow) : Animal(id, meadow), grass(grass) {}
 
 void Cow::live() {
     meadow.synchronization.wait();
@@ -13,9 +13,10 @@ void Cow::live() {
 }
 
 void Cow::eat() {
-    grass.request();
+    Grass* grass_to_eat = drawGrass();
+    grass_to_eat->request();
 
-    std::lock_guard<std::mutex> lock(grass.mutex);
+    std::lock_guard<std::mutex> lock(grass_to_eat->mutex);
     std::this_thread::sleep_for(std::chrono::milliseconds(250));
 
     thread_local std::uniform_int_distribution<> wait(2, 4);
@@ -25,5 +26,10 @@ void Cow::eat() {
         std::this_thread::sleep_for(std::chrono::milliseconds(250));
     }
 
-    grass.done_eating();
+    grass_to_eat->done_eating();
+}
+
+Grass* Cow::drawGrass() {
+    thread_local std::uniform_int_distribution<> index(0, grass.size() - 1);
+    return grass.at(index(random_generator));
 }
