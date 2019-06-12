@@ -8,12 +8,11 @@
 class Rabbit : public Animal {
     std::vector<Grass*> &grass;
     std::vector<Rabbit_Hole*> &rabbit_holes;
-    bool alive;
+    Synchronization synchronization;
 
     void live() override;
     void eat() override ;
     void hide();
-    Synchronization synchronization;
 public:
     std::mutex mutex;
 

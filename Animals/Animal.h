@@ -15,20 +15,22 @@ class Animal {
 protected:
     std::mt19937 random_generator{std::random_device{}()};
 
-    int id;
+    std::atomic<int> id;
     std::thread live_thread;
     Meadow &meadow;
+    std::atomic<bool> alive;
 
 public:
     Animal(int id, Meadow &meadow);
     virtual ~Animal();
 
-    void think();
-    void drink();
+    void think(std::string who);
+    void drink(std::string who);
     virtual void live() = 0;
     virtual void eat() = 0;
 
     int getId() const;
+    bool isAlive() const;
 };
 
 

@@ -1,16 +1,18 @@
 #include "Rabbit.h"
 
 Rabbit::Rabbit(int id, std::vector<Grass*> &grass, Meadow &meadow, std::vector<Rabbit_Hole*> &rabbit_holes)
-        : Animal(id, meadow), grass(grass), rabbit_holes(rabbit_holes), alive(true) {}
+        : Animal(id, meadow), grass(grass), rabbit_holes(rabbit_holes) {}
 
 void Rabbit::live() {
     meadow.synchronization.wait();
 
     do {
         eat();
-        drink();
-        think();
-    } while (meadow.ready);
+        if (!alive) return;
+        drink("Rabbit");
+        if (!alive) return;
+        think("Rabbit");
+    } while (meadow.ready && alive);
 }
 
 void Rabbit::eat() {
@@ -21,10 +23,11 @@ void Rabbit::eat() {
     std::this_thread::sleep_for(std::chrono::milliseconds(250));
 
     thread_local std::uniform_int_distribution<> wait(2, 4);
-
-    Utils::threadSafeCout("Rabbit " + std::to_string(id) + " is eating grass");
-    for (int time = wait(random_generator); time > 0 ; --time) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(250));
+    if (alive) {
+        Utils::threadSafeCout("Rabbit " + std::to_string(id) + " is eating grass");
+        for (int time = wait(random_generator); time > 0 ; --time) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(250));
+        }
     }
 
     grass_to_eat->done_eating();
@@ -38,11 +41,13 @@ void Rabbit::hide() {
     std::this_thread::sleep_for(std::chrono::milliseconds(250));
 
     thread_local std::uniform_int_distribution<> wait(2, 4);
-
-    Utils::threadSafeCout("Rabbit " + std::to_string(id) + " is hiding");
-    for (int time = wait(random_generator); time > 0 ; --time) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(250));
+    if (alive) {
+        Utils::threadSafeCout("Rabbit " + std::to_string(id) + " is hiding");
+        for (int time = wait(random_generator); time > 0 ; --time) {
+            std::this_thread::sleep_for(std::chrono::milliseconds(250));
+        }
     }
+
     rabbit_hole->done_hiding(id);
 }
 

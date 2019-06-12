@@ -7,8 +7,8 @@ void Wolf::live() {
 
     do {
         eat();
-        drink();
-        think();
+        drink("Wolf");
+        think("Wolf");
     } while (meadow.ready);
 }
 
@@ -34,5 +34,9 @@ void Wolf::eat() {
 
 Rabbit* Wolf::drawRabbit() {
     thread_local std::uniform_int_distribution<> index(0, rabbits.size() - 1);
-    return rabbits.at(index(random_generator));
+    Rabbit* rabbit;
+    do {
+        rabbit = rabbits.at(index(random_generator));
+    } while (!rabbit->isAlive());
+    return rabbit;
 }

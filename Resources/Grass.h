@@ -4,14 +4,15 @@
 #include <iostream>
 #include "../Meadow.h"
 #include "../Sun.h"
+#include "../Utils.h"
 
 class Grass {
-    const int id;
+    int id;
     int growth_counter;
     Sun &sun_thread;
     Meadow &meadow;
     std::thread grow_thread;
-    bool ready;
+    std::atomic<bool> ready;
 
 public:
     std::mutex mutex;

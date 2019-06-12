@@ -7,8 +7,8 @@ void Cow::live() {
 
     do {
         eat();
-        drink();
-        think();
+        drink("Cow");
+        think("Cow");
     } while (meadow.ready);
 }
 

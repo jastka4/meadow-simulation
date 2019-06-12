@@ -9,7 +9,6 @@ Grass::~Grass() {
 
 void Grass::request()  {
     if (ready) {
-        std::lock_guard<std::mutex> lock(mutex);
         ready = false;
     } else {
         synchronization.wait();
@@ -29,7 +28,7 @@ void Grass::grow() {
             growth_counter++;
             if (growth_counter == 5) {
                 ready = true;
-                std::cout << "Grass ready" << std::endl;
+                Utils::threadSafeCout("Grass ready");
                 synchronization.notify_all();
             }
         }
