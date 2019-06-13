@@ -28,7 +28,7 @@ void Grass::grow() {
             growth_counter++;
             if (growth_counter == 5) {
                 ready = true;
-                Utils::threadSafeCout("Grass ready");
+                Utils::thread_safe_cout("Grass ready");
                 synchronization.notify_all();
             }
         }

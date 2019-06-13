@@ -24,7 +24,8 @@ void Rabbit::eat() {
 
     thread_local std::uniform_int_distribution<> wait(2, 4);
     if (alive) {
-        Utils::threadSafeCout("Rabbit " + std::to_string(id) + " is eating grass");
+        status = "eating  ";
+        Utils::thread_safe_cout("Rabbit " + std::to_string(id) + " is eating grass");
         for (int time = wait(random_generator); time > 0 ; --time) {
             std::this_thread::sleep_for(std::chrono::milliseconds(250));
         }
@@ -42,7 +43,8 @@ void Rabbit::hide() {
 
     thread_local std::uniform_int_distribution<> wait(2, 4);
     if (alive) {
-        Utils::threadSafeCout("Rabbit " + std::to_string(id) + " is hiding");
+        status = "hiding  ";
+        Utils::thread_safe_cout("Rabbit " + std::to_string(id) + " is hiding");
         for (int time = wait(random_generator); time > 0 ; --time) {
             std::this_thread::sleep_for(std::chrono::milliseconds(250));
         }
@@ -56,7 +58,7 @@ void Rabbit::request() {
     if (chance(random_generator) > 5) {
         hide();
     } else {
-        Utils::threadSafeCout("Rabbit " + std::to_string(id) + " was eaten");
+        Utils::thread_safe_cout("Rabbit " + std::to_string(id) + " was eaten");
         alive = false;
     }
 }

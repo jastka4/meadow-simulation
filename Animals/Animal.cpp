@@ -1,9 +1,11 @@
 #include "Animal.h"
 
-Animal::Animal(int id, Meadow &meadow) : id(id), meadow(meadow), live_thread(&Animal::live, this), alive(true) {}
+Animal::Animal(int id, Meadow &meadow) : id(id), meadow(meadow), live_thread(&Animal::live, this), alive(true), status("waiting ") {}
 
 Animal::~Animal() {
-    live_thread.join();
+    if (live_thread.joinable()) {
+        live_thread.join();
+    }
 }
 
 void Animal::think(const std::string who) {
@@ -15,7 +17,8 @@ void Animal::think(const std::string who) {
     thread_local std::uniform_int_distribution<> dist(0, topics.size() - 1);
 
     if (alive){
-        Utils::threadSafeCout(who + " " + std::to_string(id) + " started thinking about " + topics[dist(random_generator)]);
+        status = "thinking";
+        Utils::thread_safe_cout(who + " " + std::to_string(id) + " started thinking about " + topics[dist(random_generator)]);
         for (int time = wait(random_generator); time > 0 ; --time) {
             std::this_thread::sleep_for(std::chrono::milliseconds(150));
         }
@@ -32,7 +35,8 @@ void Animal::drink(const std::string who) {
     thread_local std::uniform_int_distribution<> wait(2, 4);
 
     if (alive) {
-        Utils::threadSafeCout(who + " " + std::to_string(id) + " is drinking water");
+        status = "drinking";
+        Utils::thread_safe_cout(who + " " + std::to_string(id) + " is drinking water");
         for (int time = wait(random_generator); time > 0 ; --time) {
             std::this_thread::sleep_for(std::chrono::milliseconds(250));
         }
@@ -41,11 +45,14 @@ void Animal::drink(const std::string who) {
     meadow.pond->done_drinking(id);
 }
 
-int Animal::getId() const {
+const std::atomic<int> &Animal::getId() const {
     return id;
 }
 
-bool Animal::isAlive() const {
+const std::atomic<bool> &Animal::isAlive() const {
     return alive;
 }
 
+const std::string &Animal::getStatus() const {
+    return status;
+}

@@ -2,32 +2,41 @@
 #include "Sun.h"
 #include "Utils/Utils.h"
 
-Sun::Sun(Meadow &meadow) : meadow(meadow), live_thread(&Sun::shine, this), is_day(true) {}
+Sun::Sun(Meadow &meadow) : meadow(meadow), live_thread(&Sun::shine, this), is_day(true), progress(0) {}
 
 Sun::~Sun() {
-    live_thread.join();
+    if (live_thread.joinable()) {
+        live_thread.join();
+    }
 }
 
 void Sun::day() {
 
-    Utils::threadSafeCout("===== DAY =====");
+    Utils::thread_safe_cout("===== DAY =====");
     is_day = true;
 
-    thread_local std::uniform_int_distribution<> wait(7, 13);
-
-    for (int time = wait(random_generator); time > 0 ; --time) {
+    thread_local std::uniform_int_distribution<> wait(11, 13);
+    int time = wait(random_generator);
+    for (int i = time, counter = 0; i > 0; --i) {
+        progress = Utils::get_percentage(counter, time);
+        counter++;
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
+    progress = 0;
 }
 
 void Sun::night() {
     thread_local std::uniform_int_distribution<> wait(11, 17);
     is_day = false;
 
-    Utils::threadSafeCout("==== NIGHT ====");
-    for (int time = wait(random_generator); time > 0 ; --time) {
+    Utils::thread_safe_cout("==== NIGHT ====");
+    int time = wait(random_generator);
+    for (int i = time, counter = 0; i > 0; --i) {
+        progress = Utils::get_percentage(counter, time);
+        counter++;
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
+    progress = 0;
 }
 
 void Sun::shine() {
@@ -43,3 +52,8 @@ void Sun::shine() {
 const std::atomic<bool> &Sun::getIsDay() const {
     return is_day;
 }
+
+const std::atomic<int> &Sun::getProgress() const {
+    return progress;
+}
+

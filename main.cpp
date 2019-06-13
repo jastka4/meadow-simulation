@@ -8,8 +8,6 @@
 #include "Animals/Wolf.h"
 #include "Utils/Graphics.h"
 
-auto *graphics = new Graphics();
-
 int main() {
     Pond *pond = new Pond(10);
     Meadow meadow(pond);
@@ -40,18 +38,18 @@ int main() {
         wolves.push_back(new Wolf(i, rabbits, meadow, *sun));
     }
 
-    graphics->init();
-    refresh();
-
     std::this_thread::sleep_for(std::chrono::seconds(1));
     meadow.ready = true;
     meadow.synchronization.notify_all();
 
+    auto *graphics = new Graphics(cows, rabbits, rabbit_holes, wolves, meadow, *sun);
+    graphics->init();
+
     std::this_thread::sleep_for(std::chrono::seconds(30));
     meadow.ready = false;
 
-    Utils::threadSafeCout("===== FINISHING =====");
-    Utils::threadSafeCout("Animals are going on holiday!");
+    Utils::thread_safe_cout("===== FINISHING =====");
+    Utils::thread_safe_cout("Animals are going on holiday!");
 
     getch();
     endwin();

@@ -8,7 +8,9 @@
 class Utils {
     static std::mutex mutex;
 public:
-    static void threadSafeCout(const std::string& text);
+    static void thread_safe_cout(const std::string& text);
+    static int round_up(int to_round);
+    static int get_percentage(int numerator, int denominator);
 };
 
 
