@@ -21,12 +21,11 @@ void Wolf::eat() {
      * to create a new one).
      * */
     Rabbit* rabbit = drawRabbit();
+    std::lock_guard<std::mutex> lock(rabbit->mutex);
     rabbit->request();
 
-    std::lock_guard<std::mutex> lock(rabbit->mutex);
     std::this_thread::sleep_for(std::chrono::milliseconds(250));
-
-    thread_local std::uniform_int_distribution<> wait(2, 4);
+    thread_local std::uniform_int_distribution<> wait(10, 14);
 
     status = "hunting ";
     Utils::thread_safe_cout("Wolf " + std::to_string(id) + " is hunting rabbit");
@@ -34,8 +33,9 @@ void Wolf::eat() {
     for (int i = time, counter = 0; i > 0; --i) {
         progress = Utils::get_percentage(counter, time);
         counter++;
-        std::this_thread::sleep_for(std::chrono::milliseconds(250));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
+    progress = 0;
 }
 
 Rabbit* Wolf::drawRabbit() {

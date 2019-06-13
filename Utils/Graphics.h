@@ -20,9 +20,9 @@ class Graphics {
     void draw_sun(WINDOW *window);
     void update_sun(WINDOW *window, int &prev_progress, int &progress_index);
     void draw_results();
-    void update_cows(WINDOW *window);
-    void update_rabbits(WINDOW *window);
-    void update_wolves(WINDOW *window);
+    void update_cows(WINDOW *window, std::vector<int> &cows_progress_index, std::vector<int> &cows_prev_progress);
+    void update_rabbits(WINDOW *window, std::vector<int> &rabbits_progress_index, std::vector<int> &rabbits_prev_progress);
+    void update_wolves(WINDOW *window, std::vector<int> &wolves_progress_index, std::vector<int> &wolves_prev_progress);
 public:
 //    std::mutex cows_mutex;
 //    std::mutex rabbits_mutex;

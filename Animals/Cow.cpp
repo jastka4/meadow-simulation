@@ -14,23 +14,31 @@ void Cow::live() {
 
 void Cow::eat() {
     Grass* grass_to_eat = drawGrass();
+    std::lock_guard<std::mutex> lock(grass_to_eat->mutex);
     grass_to_eat->request();
 
-    std::lock_guard<std::mutex> lock(grass_to_eat->mutex);
     std::this_thread::sleep_for(std::chrono::milliseconds(250));
-
-    thread_local std::uniform_int_distribution<> wait(2, 4);
+    thread_local std::uniform_int_distribution<> wait(10, 14);
 
     status = "eating  ";
     Utils::thread_safe_cout("Cow " + std::to_string(id) + " is eating grass");
-    for (int time = wait(random_generator); time > 0 ; --time) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(250));
+    int time = wait(random_generator);
+    for (int i = time, counter = 0; i > 0; --i) {
+        progress = Utils::get_percentage(counter, time);
+        counter++;
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
+    progress = 0;
 
     grass_to_eat->done_eating();
 }
 
 Grass* Cow::drawGrass() {
     thread_local std::uniform_int_distribution<> index(0, grass.size() - 1);
-    return grass.at(index(random_generator));
+    Grass* grass_to_eat;
+    do {
+        status = "waiting ";
+        grass_to_eat = grass.at(index(random_generator));
+    } while (!grass_to_eat->getReady());
+    return grass_to_eat;
 }

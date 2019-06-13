@@ -19,45 +19,62 @@ void Graphics::init() {
     draw_results();
 }
 
-void Graphics::update_cows(WINDOW *window) {
+void Graphics::update_cows(WINDOW *window, std::vector<int> &cows_progress_index, std::vector<int> &cows_prev_progress) {
+    int x = 20;
+    int y = 4;
+
     for (int i = 0; i < cows.size(); ++i) {
         Cow* cow = cows.at(i);
-//        std::string str = std::to_string(cow->isAlive());
+
         //cow mutex
+        int progress = cow->getProgress();
+        update_progress_bar(window, cows_prev_progress.at(i), cows_progress_index.at(i), progress, x, y + i);
+
         std::string state = cow->getStatus();
         const char *cstr = state.c_str();
         mvwprintw(window, 4 + i, 2, cstr);
     }
+    box(window, 0, 0);
     wrefresh(window);
 }
 
-void Graphics::update_rabbits(WINDOW *window) {
+void Graphics::update_rabbits(WINDOW *window, std::vector<int> &rabbits_progress_index, std::vector<int> &rabbits_prev_progress) {
+    int x = 20;
+    int y = 4;
+
     for (int i = 0; i < rabbits.size(); ++i) {
         Rabbit *rabbit = rabbits.at(i);
-        std::string str = std::to_string(rabbit->isAlive());
+
         // rabbit mutex
-        std::string state = rabbit->getStatus() + " " + str;
+        int progress = rabbit->getProgress();
+        update_progress_bar(window, rabbits_prev_progress.at(i), rabbits_progress_index.at(i), progress, x, y + i);
+
+        std::string state = rabbit->getStatus();
         const char *cstr = state.c_str();
         mvwprintw(window, 4 + i, 2, cstr);
     }
+    box(window, 0, 0);
     wrefresh(window);
 
 }
 
-void Graphics::update_wolves(WINDOW *window) {
-    int x = 94;
-    int y = 2;
+void Graphics::update_wolves(WINDOW *window, std::vector<int> &wolves_progress_index, std::vector<int> &wolves_prev_progress) {
+    int x = 20;
+    int y = 4;
 
     for (int i = 0; i < wolves.size(); ++i) {
         Wolf *wolf = wolves.at(i);
 
+        // wolf mutex
         int progress = wolf->getProgress();
+        update_progress_bar(window, wolves_prev_progress.at(i), wolves_progress_index.at(i), progress, x, y + i);
 
         // wolf mutex
         std::string state = wolf->getStatus();
         const char *cstr = state.c_str();
         mvwprintw(window, 4 + i, 2, cstr);
     }
+    box(window, 0, 0);
     wrefresh(window);
 }
 
@@ -83,12 +100,33 @@ void Graphics::draw_results() {
     int sun_progress_index = 0;
     int sun_prev_progress = 0;
 
+    std::vector<int> rabbits_progress_index;
+    std::vector<int> rabbits_prev_progress;
+    for (int i = 0; i < rabbits.size(); i++) {
+        rabbits_progress_index.push_back(0);
+        rabbits_prev_progress.push_back(0);
+    }
+
+    std::vector<int> cows_progress_index;
+    std::vector<int> cows_prev_progress;
+    for (int i = 0; i < cows.size(); i++) {
+        cows_progress_index.push_back(0);
+        cows_prev_progress.push_back(0);
+    }
+
+    std::vector<int> wolves_progress_index;
+    std::vector<int> wolves_prev_progress;
+    for (int i = 0; i < wolves.size(); i++) {
+        wolves_progress_index.push_back(0);
+        wolves_prev_progress.push_back(0);
+    }
+
     draw_sun(sun_window);
 
     do {
-        update_rabbits(rabbits_window);
-        update_cows(cows_window);
-        update_wolves(wolves_window);
+        update_rabbits(rabbits_window, rabbits_progress_index, rabbits_prev_progress);
+        update_cows(cows_window, cows_progress_index, cows_prev_progress);
+        update_wolves(wolves_window, wolves_progress_index, wolves_prev_progress);
         update_sun(sun_window, sun_prev_progress, sun_progress_index);
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     } while (meadow.ready);

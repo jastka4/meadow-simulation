@@ -15,7 +15,7 @@ void Sun::day() {
     Utils::thread_safe_cout("===== DAY =====");
     is_day = true;
 
-    thread_local std::uniform_int_distribution<> wait(11, 13);
+    thread_local std::uniform_int_distribution<> wait(10, 24);
     int time = wait(random_generator);
     for (int i = time, counter = 0; i > 0; --i) {
         progress = Utils::get_percentage(counter, time);
@@ -26,7 +26,7 @@ void Sun::day() {
 }
 
 void Sun::night() {
-    thread_local std::uniform_int_distribution<> wait(11, 17);
+    thread_local std::uniform_int_distribution<> wait(10, 24);
     is_day = false;
 
     Utils::thread_safe_cout("==== NIGHT ====");

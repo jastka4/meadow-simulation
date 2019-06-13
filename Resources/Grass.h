@@ -24,6 +24,7 @@ public:
     void request();
     void done_eating();
     void grow();
+    const std::atomic<bool> &getReady() const;
 };
 
 

@@ -36,3 +36,7 @@ void Grass::grow() {
 
     synchronization.notify_all();   // wake all sleeping threads after finish
 }
+
+const std::atomic<bool> &Grass::getReady() const {
+    return ready;
+}
