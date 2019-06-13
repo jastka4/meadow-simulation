@@ -19,11 +19,13 @@ protected:
     std::thread live_thread;
     Meadow &meadow;
     std::atomic<bool> alive;
+    std::atomic<int> progress;
     std::string status;
 
 public:
     const std::atomic<int> &getId() const;
     const std::atomic<bool> &isAlive() const;
+    const std::atomic<int> &getProgress() const;
     const std::string &getStatus() const;
 
     Animal(int id, Meadow &meadow);

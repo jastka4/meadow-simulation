@@ -56,3 +56,7 @@ const std::atomic<bool> &Animal::isAlive() const {
 const std::string &Animal::getStatus() const {
     return status;
 }
+
+const std::atomic<int> &Animal::getProgress() const {
+    return progress;
+}

@@ -30,7 +30,10 @@ void Wolf::eat() {
 
     status = "hunting ";
     Utils::thread_safe_cout("Wolf " + std::to_string(id) + " is hunting rabbit");
-    for (int time = wait(random_generator); time > 0 ; --time) {
+    int time = wait(random_generator);
+    for (int i = time, counter = 0; i > 0; --i) {
+        progress = Utils::get_percentage(counter, time);
+        counter++;
         std::this_thread::sleep_for(std::chrono::milliseconds(250));
     }
 }

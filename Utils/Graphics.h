@@ -17,8 +17,8 @@ class Graphics {
     int max_x, max_y; // TODO
 
     void define_colors();
-    void draw_sun();
-    void update_sun(int &prev_progress, int &progress_index);
+    void draw_sun(WINDOW *window);
+    void update_sun(WINDOW *window, int &prev_progress, int &progress_index);
     void draw_results();
     void update_cows(WINDOW *window);
     void update_rabbits(WINDOW *window);
@@ -33,6 +33,8 @@ public:
              std::vector<Wolf*> &wolves, Meadow &meadow, Sun &sun);
 
     void init();
+
+    void update_progress_bar(WINDOW *window, int &prev_progress, int &progress_index, int progress, int x, int y);
 };
 
 
