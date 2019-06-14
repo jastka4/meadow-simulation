@@ -3,6 +3,7 @@
 Wolf::Wolf(int id, std::vector<Rabbit*> &rabbits, Meadow &meadow, Sun &sun) : Animal(id, meadow), rabbits(rabbits), sun(sun) {}
 
 void Wolf::live() {
+    meadow.synchronization.setSleep(true);
     meadow.synchronization.wait();
 
     do {
@@ -42,6 +43,7 @@ Rabbit* Wolf::drawRabbit() {
     thread_local std::uniform_int_distribution<> index(0, rabbits.size() - 1);
     Rabbit* rabbit;
     do {
+        std::lock_guard<std::mutex> lock(mutex);
         rabbit = rabbits.at(index(random_generator));
     } while (!rabbit->isAlive());
     return rabbit;

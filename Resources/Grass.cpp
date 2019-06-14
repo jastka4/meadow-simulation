@@ -11,6 +11,7 @@ void Grass::request()  {
     if (ready) {
         ready = false;
     } else {
+        synchronization.setSleep(true);
         synchronization.wait();
     }
 }
@@ -20,6 +21,7 @@ void Grass::done_eating() {
 }
 
 void Grass::grow() {
+    meadow.synchronization.setSleep(true);
     meadow.synchronization.wait();
 
     do {
@@ -29,11 +31,12 @@ void Grass::grow() {
             if (growth_counter == 5) {
                 ready = true;
                 Utils::thread_safe_cout("Grass ready");
+                synchronization.setSleep(false);
                 synchronization.notify_all();
             }
         }
     } while (meadow.ready);
-
+    synchronization.setSleep(false);
     synchronization.notify_all();   // wake all sleeping threads after finish
 }
 

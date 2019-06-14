@@ -40,6 +40,7 @@ void Sun::night() {
 }
 
 void Sun::shine() {
+    meadow.synchronization.setSleep(true);
     meadow.synchronization.wait();
 
     do {

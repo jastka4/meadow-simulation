@@ -3,6 +3,7 @@
 Cow::Cow(int id, std::vector<Grass*> &grass, Meadow &meadow) : Animal(id, meadow), grass(grass) {}
 
 void Cow::live() {
+    meadow.synchronization.setSleep(true);
     meadow.synchronization.wait();
 
     do {
@@ -38,7 +39,8 @@ Grass* Cow::drawGrass() {
     Grass* grass_to_eat;
     do {
         status = "waiting ";
-        grass_to_eat = grass.at(index(random_generator));
+        std::lock_guard<std::mutex> lock(mutex);
+        grass_to_eat = grass.at(index(random_generator)); // TODO - not sure how to use mutex here
     } while (!grass_to_eat->getReady());
     return grass_to_eat;
 }

@@ -8,12 +8,14 @@ void Pond::request(int id) {
         std::lock_guard<std::mutex> lock(mutex);
         animals.push_back(id);
     } else {
+        synchronization.setSleep(true);
         synchronization.wait();
     }
 }
 
 void Pond::done_drinking(int id) {
     animals.erase(std::remove(animals.begin(), animals.end(), id), animals.end());
+    synchronization.setSleep(false);
     synchronization.notify_all();
 }
 

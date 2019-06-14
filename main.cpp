@@ -15,7 +15,7 @@ static const int NUMBER_OF_RABBIT_HOLES = 2;
 static const int NUMBER_OF_WOLVES = 10;
 
 int main() {
-    Pond *pond = new Pond(10);
+    Pond *pond = new Pond(5);
     Meadow meadow(pond);
     Sun *sun = new Sun(meadow);
 
@@ -46,6 +46,7 @@ int main() {
 
     std::this_thread::sleep_for(std::chrono::seconds(1));
     meadow.ready = true;
+    meadow.synchronization.setSleep(false);
     meadow.synchronization.notify_all();
 
     auto *graphics = new Graphics(cows, rabbits, rabbit_holes, wolves, meadow, *sun);

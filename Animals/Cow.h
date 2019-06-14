@@ -7,6 +7,7 @@
 
 class Cow : public Animal{
     std::vector<Grass*> &grass;
+    std::mutex mutex;
 
     void live() override;
     void eat() override;

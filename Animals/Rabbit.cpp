@@ -4,6 +4,7 @@ Rabbit::Rabbit(int id, std::vector<Grass*> &grass, Meadow &meadow, std::vector<R
         : Animal(id, meadow), grass(grass), rabbit_holes(rabbit_holes) {}
 
 void Rabbit::live() {
+    meadow.synchronization.setSleep(true);
     meadow.synchronization.wait();
 
     do {
@@ -40,9 +41,9 @@ void Rabbit::eat() {
 
 void Rabbit::hide() {
     Rabbit_Hole* rabbit_hole = drawRabbitHole();
+//    std::lock_guard<std::mutex> lock(rabbit_hole->mutex); // TODO - ask about mutex here vs in methods
     rabbit_hole->request(id);
 
-    std::lock_guard<std::mutex> lock(rabbit_hole->mutex);
     std::this_thread::sleep_for(std::chrono::milliseconds(250));
 
     thread_local std::uniform_int_distribution<> wait(10, 14);
@@ -77,6 +78,7 @@ Grass* Rabbit::drawGrass() {
     Grass* grass_to_eat;
     do {
         status = "waiting ";
+        std::lock_guard<std::mutex> lock(mutex);
         grass_to_eat = grass.at(index(random_generator));
     } while (!grass_to_eat->getReady());
     return grass_to_eat;

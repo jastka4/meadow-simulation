@@ -7,6 +7,7 @@
 class Wolf : public Animal {
     std::vector<Rabbit*> &rabbits;
     Sun &sun;
+    std::mutex mutex;
 
 public:
     Wolf(int id, std::vector<Rabbit*> &rabbits, Meadow &meadow, Sun &sun);
