@@ -23,6 +23,9 @@ class Graphics {
     void update_cows(WINDOW *window, std::vector<int> &cows_progress_index, std::vector<int> &cows_prev_progress);
     void update_rabbits(WINDOW *window, std::vector<int> &rabbits_progress_index, std::vector<int> &rabbits_prev_progress);
     void update_wolves(WINDOW *window, std::vector<int> &wolves_progress_index, std::vector<int> &wolves_prev_progress);
+    void update_pond(WINDOW *window);
+    void update_rabbit_holes(WINDOW *window);
+    void update_progress_bar(WINDOW *window, int &prev_progress, int &progress_index, int progress, int x, int y);
 public:
 //    std::mutex cows_mutex;
 //    std::mutex rabbits_mutex;
@@ -33,8 +36,6 @@ public:
              std::vector<Wolf*> &wolves, Meadow &meadow, Sun &sun);
 
     void init();
-
-    void update_progress_bar(WINDOW *window, int &prev_progress, int &progress_index, int progress, int x, int y);
 };
 
 

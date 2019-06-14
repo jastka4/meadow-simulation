@@ -13,13 +13,13 @@ class Sun {
     Meadow &meadow;
     std::thread live_thread;
     std::atomic<bool> is_day;
-    std::atomic<int> progress;
+    std::atomic_int progress;
 public:
     explicit Sun(Meadow &meadow);
     virtual ~Sun();
 
     const std::atomic<bool> &getIsDay() const;
-    const std::atomic<int> &getProgress() const;
+    const std::atomic_int &getProgress() const;
 };
 
 

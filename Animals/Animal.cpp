@@ -52,7 +52,7 @@ void Animal::drink(const std::string who) {
     meadow.pond->done_drinking(id);
 }
 
-const std::atomic<int> &Animal::getId() const {
+const std::atomic_int &Animal::getId() const {
     return id;
 }
 
@@ -64,6 +64,6 @@ const std::string &Animal::getStatus() const {
     return status;
 }
 
-const std::atomic<int> &Animal::getProgress() const {
+const std::atomic_int &Animal::getProgress() const {
     return progress;
 }

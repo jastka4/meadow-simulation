@@ -30,9 +30,9 @@ void Graphics::update_cows(WINDOW *window, std::vector<int> &cows_progress_index
         int progress = cow->getProgress();
         update_progress_bar(window, cows_prev_progress.at(i), cows_progress_index.at(i), progress, x, y + i);
 
-        std::string state = cow->getStatus();
-        const char *cstr = state.c_str();
-        mvwprintw(window, 4 + i, 2, cstr);
+        const std::string& state = cow->getStatus();
+        const char *c_str = state.c_str();
+        mvwprintw(window, 4 + i, 2, c_str);
     }
     box(window, 0, 0);
     wrefresh(window);
@@ -45,13 +45,23 @@ void Graphics::update_rabbits(WINDOW *window, std::vector<int> &rabbits_progress
     for (int i = 0; i < rabbits.size(); ++i) {
         Rabbit *rabbit = rabbits.at(i);
 
-        // rabbit mutex
-        int progress = rabbit->getProgress();
+        int progress = 0;
+
+        const std::string& state = rabbit->getStatus();
+        const char *c_str = state.c_str();
+        if (state.find("eaten") != std::string::npos) {
+            wattron(window, COLOR_PAIR(4));
+            mvwprintw(window, y + i, 2, c_str);
+            wattroff(window, COLOR_PAIR(4));
+            mvwprintw(window, y + i, x, "          ");
+        } else {
+            // rabbit mutex
+            progress = rabbit->getProgress();
+            mvwprintw(window, y + i, 2, c_str);
+        }
+
         update_progress_bar(window, rabbits_prev_progress.at(i), rabbits_progress_index.at(i), progress, x, y + i);
 
-        std::string state = rabbit->getStatus();
-        const char *cstr = state.c_str();
-        mvwprintw(window, 4 + i, 2, cstr);
     }
     box(window, 0, 0);
     wrefresh(window);
@@ -70,29 +80,68 @@ void Graphics::update_wolves(WINDOW *window, std::vector<int> &wolves_progress_i
         update_progress_bar(window, wolves_prev_progress.at(i), wolves_progress_index.at(i), progress, x, y + i);
 
         // wolf mutex
-        std::string state = wolf->getStatus();
-        const char *cstr = state.c_str();
-        mvwprintw(window, 4 + i, 2, cstr);
+        const std::string& state = wolf->getStatus();
+        const char *c_str = state.c_str();
+        mvwprintw(window, 4 + i, 2, c_str);
     }
     box(window, 0, 0);
     wrefresh(window);
 }
 
+void Graphics::update_pond(WINDOW* window) {
+    const int capacity = meadow.pond->get_capacity();
+    const int number_of_animals = meadow.pond->get_number_of_animals();
+    const std::string info = "Capacity: " + std::to_string(capacity);
+    const char *c_info = info.c_str();   // TODO - make it a function
+
+    const std::string animals_info = "Drinking: " + std::to_string(number_of_animals);
+    const char *c_animals_info = animals_info.c_str();
+
+    mvwprintw(window, 4, 3, "POND");
+    mvwprintw(window, 5, 3, c_info);
+    mvwprintw(window, 6, 13, "  ");
+    mvwprintw(window, 6, 3, c_animals_info);
+    wrefresh(window);
+}
+
+void Graphics::update_rabbit_holes(WINDOW* window) {
+    const int capacity = rabbit_holes.at(0)->get_capacity();
+    const std::string info = "Capacity: " + std::to_string(capacity);
+    const char *c_info = info.c_str();   // TODO - make it a function
+
+    mvwprintw(window, 4, (max_x - 87), "RABBIT HOLES");
+    mvwprintw(window, 5, (max_x - 87), c_info);
+
+    for (int i = 0; i < rabbit_holes.size(); ++i) {
+        Rabbit_Hole *rabbit_hole = rabbit_holes.at(i);
+        const int number_of_animals = rabbit_hole->get_number_of_animals();
+        const std::string animals_info = "Hiding: " + std::to_string(number_of_animals);
+        const char *c_animals_info = animals_info.c_str();
+        mvwprintw(window, 6 + i, (max_x - 87) + 8, "  ");
+        mvwprintw(window, 6 + i, (max_x - 87), c_animals_info);
+    }
+
+    wrefresh(window);
+}
+
 void Graphics::draw_results() {
-    WINDOW *sun_window = newwin(40, (max_x - 70), 0, 35);
+    WINDOW *sun_window = newwin(20, (max_x - 70), 0, 35);
     wrefresh(sun_window);
 
-    WINDOW *rabbits_window = newwin(40, (max_x - 70) / 3, 13, 35 + (max_x - 70) / 3);
+    WINDOW *rabbits_window = newwin(20, (max_x - 70) / 3, 13, 35 + (max_x - 70) / 3);
+    mvwprintw(rabbits_window, 1, (max_x - 70) / 6 - 4, "RABBITS");
     mvwhline(rabbits_window, 3, 0, ACS_HLINE, (max_x - 70) / 3);
     box(rabbits_window, 0, 0);
     wrefresh(rabbits_window);
 
-    WINDOW *cows_window = newwin(40, (max_x - 70) / 3, 13, 35);
+    WINDOW *cows_window = newwin(20, (max_x - 70) / 3, 13, 35);
+    mvwprintw(cows_window, 1, (max_x - 70) / 6 - 2, "COWS");
     mvwhline(cows_window, 3, 0, ACS_HLINE, (max_x - 70) / 3);
     box(cows_window, 0, 0);
     wrefresh(cows_window);
 
-    WINDOW *wolves_window = newwin(40, (max_x - 70) / 3, 13, 35 + (max_x - 70) / 3 * 2);
+    WINDOW *wolves_window = newwin(20, (max_x - 70) / 3, 13, 35 + (max_x - 70) / 3 * 2);
+    mvwprintw(wolves_window, 1, (max_x - 70) / 6 - 3, "WOLVES");
     mvwhline(wolves_window, 3, 0, ACS_HLINE, (max_x - 70) / 3);
     box(wolves_window, 0, 0);
     wrefresh(wolves_window);
@@ -128,6 +177,8 @@ void Graphics::draw_results() {
         update_cows(cows_window, cows_progress_index, cows_prev_progress);
         update_wolves(wolves_window, wolves_progress_index, wolves_prev_progress);
         update_sun(sun_window, sun_prev_progress, sun_progress_index);
+        update_pond(sun_window);
+        update_rabbit_holes(sun_window);
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     } while (meadow.ready);
 
@@ -151,7 +202,7 @@ void Graphics::update_sun(WINDOW *window, int &prev_progress, int &progress_inde
 }
 
 void Graphics::update_progress_bar(WINDOW *window, int &prev_progress, int &progress_index, int progress, int x, int y) {
-    const char *c_progress = (std::to_string(progress) + " %").c_str();
+    const char *c_progress_info = (std::to_string(progress) + " %% ").c_str();
     progress = Utils::round_up(progress);
 
     if (progress <= 100) {
@@ -170,7 +221,7 @@ void Graphics::update_progress_bar(WINDOW *window, int &prev_progress, int &prog
 
     mvwprintw(window, y, x - 1, "[");
     mvwprintw(window, y, x + 10, "]");
-    mvwprintw(window, y, x + 13, c_progress);
+    mvwprintw(window, y, x + 13, c_progress_info);
 }
 
 void Graphics::draw_sun(WINDOW *window) {

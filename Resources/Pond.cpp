@@ -16,3 +16,11 @@ void Pond::done_drinking(int id) {
     animals.erase(std::remove(animals.begin(), animals.end(), id), animals.end());
     synchronization.notify_all();
 }
+
+int Pond::get_capacity() const {
+    return capacity;
+}
+
+int Pond::get_number_of_animals() {
+    return animals.size();
+}

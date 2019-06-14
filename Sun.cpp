@@ -53,7 +53,7 @@ const std::atomic<bool> &Sun::getIsDay() const {
     return is_day;
 }
 
-const std::atomic<int> &Sun::getProgress() const {
+const std::atomic_int &Sun::getProgress() const {
     return progress;
 }
 

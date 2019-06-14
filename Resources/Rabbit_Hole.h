@@ -10,7 +10,7 @@
 class Rabbit_Hole {
     std::vector<int> rabbits;
     Synchronization synchronization;
-    int capacity;
+    std::atomic_int capacity;
 public:
     std::mutex mutex;
 
@@ -18,6 +18,8 @@ public:
 
     void request(int id);
     void done_hiding(int id);
+    int get_capacity() const;
+    int get_number_of_animals();
 };
 
 

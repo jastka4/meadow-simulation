@@ -9,7 +9,7 @@
 class Pond {
     std::vector<int> animals;
     Synchronization synchronization;
-    int capacity;
+    std::atomic_int capacity;
 
 public:
     std::mutex mutex;
@@ -18,6 +18,8 @@ public:
 
     void request(int id);
     void done_drinking(int id);
+    int get_capacity() const;
+    int get_number_of_animals();
 };
 
 
